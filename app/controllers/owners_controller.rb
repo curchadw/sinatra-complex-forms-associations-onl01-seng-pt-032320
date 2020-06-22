@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class OwnersController < ApplicationController
 
   get '/owners' do
@@ -41,4 +42,44 @@ class OwnersController < ApplicationController
       end 
     redirect "/owners/#{@owner.id}"
   end
+=======
+class OwnersController < ApplicationController
+
+  get '/owners' do
+    @owners = Owner.all
+    erb :'/owners/index' 
+  end
+
+  get '/owners/new' do
+    @pets = Pet.all
+    erb :'/owners/new'
+  end
+
+  post '/owners' do 
+    @owner = Owner.create(params[:owner])
+    redirect "/owners/#{@owner.id}"
+  end
+
+  get '/owners/:id/edit' do 
+    @owner = Owner.find(params[:id])
+    erb :'/owners/edit'
+  end
+
+  get '/owners/:id' do 
+    @owner = Owner.find(params[:id])
+    erb :'/owners/show'
+  end
+
+  patch '/owners/:id' do 
+    if !params[:owner].keys.include?("pet_ids")
+      params[:owner]['pet_ids'] = []
+    end
+    @owner = Owner.find(params[:id])
+    @owner.update(params[:owner])
+    if !params['pet']['name']
+       @owner.pets << Pet.create(name: params["pet"]["name"])
+    end
+    redirect "owners/#{@owner.id}"
+  end
+>>>>>>> 3947c335928caf2d5e00b3f048020ec2ae72a9e6
 end
